@@ -13,8 +13,12 @@ function findMinMax(data){
 
     // what is the difference between min and max 
     let length = Math.floor(max1-min1).toString().length;  
-    let min = Math.round((min1)/10**(length-1))*10**(length-1) // Find nearest 1,10,100,... to min
-    let max = Math.round((max1)/10**(length-1))*10**(length-1) // Find nearest 1,10,100,... to max
+
+    // Find nearest 1,10,100,... to min
+    let min = Math.round((min1)/10**(length-1))*10**(length-1) 
+    
+    // Find nearest 1,10,100,... to max
+    let max = Math.round((max1)/10**(length-1))*10**(length-1) 
     return [min, max]
 }
 
@@ -28,9 +32,8 @@ export function setYaxis(series) {
             min = findMinMax(series[i].values)[0];
         };
         if (findMinMax(series[i].values)[1] > max) {
-            min = findMinMax(series[i].values)[1];
+            max = findMinMax(series[i].values)[1];
         };
-
     }
 
     let steps = 4;
