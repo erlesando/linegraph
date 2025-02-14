@@ -1,14 +1,10 @@
-<script>
-    import LineGraph from "$lib/LineGraph.svelte";
-    let showTextbox = false;
-</script>
-
-<LineGraph
+/* <LineGraph
+    debug={false}
     column_names={[
         'andy', 'braden', 'cody', 'dory', 'edith'
         ]}
-    ylabel="Heyy"
-    xlabel="Pupils"
+    ylabel="y-akse tittel"
+    xlabel="x-akse tittel"
     series={[
         {
             legend: 'name',
@@ -21,5 +17,11 @@
             color: 'red'
         }
     ]}
-/>
+    animation="line"
+/> */
 
+let data = [];
+
+export function poll() {
+	return data = [1,2,3,4,6];
+}
