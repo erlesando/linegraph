@@ -10,7 +10,9 @@ export function scale(domain, range) {
 function findMinMax(data){
     let min1 = Math.min(...data);
     let max1 = Math.max(...data);
-    let length = Math.floor(max1-min1).toString().length;  // how big is the difference between th 
+
+    // what is the difference between min and max 
+    let length = Math.floor(max1-min1).toString().length;  
     let min = Math.round((min1)/10**(length-1))*10**(length-1) // Find nearest 1,10,100,... to min
     let max = Math.round((max1)/10**(length-1))*10**(length-1) // Find nearest 1,10,100,... to max
     return [min, max]
@@ -20,6 +22,7 @@ export function setYaxis(series) {
     let min = findMinMax(series[0].values)[0];
     let max = findMinMax(series[0].values)[1];
 
+    // find the smallest and largest number of all the data sets
     for (let i = 1; i < series.length; i++){
         if (findMinMax(series[i].values)[0] < min) {
             min = findMinMax(series[i].values)[0];
@@ -33,11 +36,12 @@ export function setYaxis(series) {
     let steps = 4;
     let stepSize = (max - min) / (steps - 1);
 
+    // do not allow decimals unless its a small difference between smallest and largest number
     if (stepSize > 1) {
         stepSize = Math.ceil(stepSize);
     }
   
-    // Generate labels with whole number steps
+    // Generate labels for y-axis
     let yLabels = Array.from({ length: steps }, (_, i) => min + i * stepSize);
     yLabels.push(yLabels[yLabels.length-1] + stepSize/2);
     yLabels.unshift(yLabels[0] - stepSize/2);

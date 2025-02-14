@@ -1,24 +1,22 @@
 <script lang="ts">
     let { debug=false, column_names, xlabel = "", ylabel = "", series, animation} = $props();
+
+    import { scale, setYaxis} from '$lib/utils';
+
     let hoveredValue = $state([null, 0, 0],);
     let showValue = $state("")
+
     const onFocus = () => showValue = "";
     const onBlur = () => showValue = "";
-    let show = false;
-    import { draw } from 'svelte/transition';
-	import { scale, setYaxis} from '$lib/utils';
-    import { json } from '@sveltejs/kit';
 
     let width = $state(1200);
     let height = $state(600);
 
     let yAxis = setYaxis(series);
-    let yaxis = $state([]);
+    let yaxis = yAxis.slice(1,yAxis.length-1);
 
     const x = $derived(scale([0, column_names.length], [0, width]));
     const y = $derived(scale([yAxis[0], yAxis[yAxis.length-1]], [height, 0]));
-
-    yaxis = yAxis.slice(1,yAxis.length-1)
     </script>
 
     <div>
@@ -74,7 +72,8 @@
                              </text>
                     {/if}
                     {#if i<serie.values.length-1}
-                        <line x1="{x(i+0.5)}" x2="{x(i+1.5)}" y1="{y(dataPoint)}" y2="{y(serie.values[i+1])}" style="stroke:{serie.color};stroke-width:2"></line>
+                        <!-- <line x1="{x(i+0.5)}" x2="{x(i+1.5)}" y1="{y(dataPoint)}" y2="{y(serie.values[i+1])}" style="stroke:{serie.color};stroke-width:2" /> -->
+                        <path class="path" d="M{x(i+0.5)}, {y(dataPoint)}, {x(i+1.5)}, {y(serie.values[i+1])}" stroke-width="4" stroke={serie.color}/>
                     {/if}                     
                 {/each}
  
@@ -94,18 +93,15 @@
         margin: 20px 80px;
         overflow: visible;
     }
-
-    .textbox {
-        position: absolute;
-        top: 60px;
-        left: 50%;
-        transform: translateX(-50%);
-        background-color: white;
-        color: black;
-        padding: 10px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-        white-space: nowrap;
+    .path {
+        stroke-dasharray: 1000;
+        stroke-dashoffset: 1000;
+        animation: dash 5s linear forwards;
     }
+
+    @keyframes dash {
+        to {
+            stroke-dashoffset: 0;
+        }
+        }
   </style>
