@@ -1,6 +1,9 @@
 <script lang="ts">
-    let { debug=false, column_names, xlabel = "", ylabel = "", series } = $props();
-    let showTextbox = false;
+    let { debug=false, column_names, xlabel = "", ylabel = "", series, animation} = $props();
+    let hoveredValue = $state([null, 0, 0],);
+    let showValue = $state("")
+    const onFocus = () => showValue = "";
+    const onBlur = () => showValue = "";
     let show = false;
     import { draw } from 'svelte/transition';
 	import { scale, setYaxis} from '$lib/utils';
@@ -46,9 +49,29 @@
         <g >
             {#each series as serie, j}
                 {#each serie.values as dataPoint, i}
-                    <circle cx="{x(i+0.5)}" cy="{y(dataPoint)}" r="10" fill="{serie.color}" onmouseover={() => showTextbox = true} onmouseout={() => showTextbox = false}></circle>
-                    {#if showTextbox === true}
-                        <div class="textbox">Hello! I'm a textbox.</div>
+                    <circle cx="{x(i+0.5)}" cy="{y(dataPoint)}" r="10" fill="{serie.color}"></circle>
+                    <circle cx="{x(i+0.5)}" cy="{y(dataPoint)}" r="20" opacity=0% aria-label="circle" role="presentation" onblur={onBlur} onfocus={onFocus} onmouseover={() => hoveredValue = [dataPoint,i,j]} onmouseout={() => hoveredValue = [null,i, j]}></circle>
+                    {#if hoveredValue[0] !== null}
+                        <rect 
+                            x="{x(hoveredValue[1]+0.5)+10}"
+                            y="{y(hoveredValue[0]) - 10}"
+                            width="100" 
+                            height="40" 
+                            fill= #E8E8E8
+                            stroke="black" 
+                            rx="5"
+                        />
+                        <text 
+                            x="{x(hoveredValue[1]+0.5)+60}"
+                            y="{y(hoveredValue[0])+20}"
+                            font-size="14" 
+                            fill="black"
+                            text-anchor="middle" 
+                            alignment-baseline="middle"
+                            > 
+                            <tspan x="{x(hoveredValue[1]+0.5)+60}" y="{y(hoveredValue[0])+8}">{series[hoveredValue[2]].legend} </tspan>
+                            <tspan x="{x(hoveredValue[1]+0.5)+60}" y="{y(hoveredValue[0])+22}">{hoveredValue[0]}</tspan>
+                             </text>
                     {/if}
                     {#if i<serie.values.length-1}
                         <line x1="{x(i+0.5)}" x2="{x(i+1.5)}" y1="{y(dataPoint)}" y2="{y(serie.values[i+1])}" style="stroke:{serie.color};stroke-width:2"></line>

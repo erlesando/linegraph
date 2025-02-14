@@ -4,10 +4,11 @@
 </script>
 
 <LineGraph
+    debug={false}
     column_names={[
         'andy', 'braden', 'cody', 'dory', 'edith'
         ]}
-    ylabel="Heyy"
+    ylabel="Number"
     xlabel="Pupils"
     series={[
         {
@@ -21,5 +22,6 @@
             color: 'red'
         }
     ]}
+    animation="line"
 />
 
