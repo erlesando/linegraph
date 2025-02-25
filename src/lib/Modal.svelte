@@ -3,6 +3,7 @@
 
 	let { showModal = $bindable(), data=$bindable(), recreateCoord=$bindable()} = $props();
     let dialog = $state()
+    let recreateTable = $state(true)
 
     let newdata = $state({
             title:"Title",
@@ -32,6 +33,13 @@
         setTimeout(() => recreateCoord = true, 0);
     }
 
+    function handleReset() {
+        newdata = JSON.parse(JSON.stringify(data[0]))
+        recreateTable = false
+        setTimeout(() => recreateTable = true, 500);
+    }
+
+
     $effect(() => {
 		if (showModal) dialog.showModal();
 	});
@@ -53,8 +61,11 @@
         <input type= "text", id="xlabel" bind:value={newdata.xlabel} /><br>
         <label for="ylabel">y-akse: </label>
         <input type= "text", id="ylabel" bind:value={newdata.ylabel} /><br> <br>
-        <Table bind:newdata />
+        {#if recreateTable}    
+            <Table bind:newdata />
+        {/if}
         <button type="submit", onclick={() => handleSubmit(newdata)}>Lagre</button>
+        <button onclick={handleReset}>Reset</button>
     </div>
 </dialog>
 {/if}

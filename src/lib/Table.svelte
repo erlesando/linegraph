@@ -83,7 +83,7 @@
         <th></th>
         {#each newdata.series as s, colIndex}
         <th>
-            <input bind:value={s.color}>
+            <input style="color:{s.color}" bind:value={s.color}>
         </th>
     {/each}
     </tr>
@@ -123,12 +123,12 @@
 	  border: none;
 	  padding: 4px;
 	  font-size: 14px;
-		background: rgba(0,0,0,0%);
+	    background: rgba(0,0,0,0%);
 	}
 
 	input:focus {
 	  outline: none;
-	  background-color: #eaf6ff;
+	  background-color: rgba(0,0,0,0%);
 	}
 
   th, td {
