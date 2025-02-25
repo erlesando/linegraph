@@ -1,0 +1,78 @@
+<script>
+	import Table from './Table.svelte'
+
+	let { showModal = $bindable(), data=$bindable(), recreateCoord=$bindable()} = $props();
+    let dialog = $state()
+
+    let newdata = $state({
+            title:"Title",
+            ylabel:"ylabel",
+            xlabel:"xlabel",
+            graphtype: "linje",
+            xColumns:['andy', 'braden', 'cody', 'dory', 'edith'],
+            series: [
+                { 
+                    legend: "Name", 
+                    values: [1.3, 1.5, 3.6, 3.4, 1.5], 
+                    color: "red", 
+                    id: 1 },
+                { 
+                    legend: "Foo", 
+                    values: [3, 2.5, 1.6, 2, 1.5], 
+                    color: "blue", 
+                    id: 2 }
+            ],
+            id:1
+            })
+
+    function handleSubmit(newdata) {
+        data[0] = JSON.parse(JSON.stringify(newdata))
+        showModal = false
+        recreateCoord = false
+        setTimeout(() => recreateCoord = true, 0);
+    }
+
+    $effect(() => {
+		if (showModal) dialog.showModal();
+	});
+</script>
+
+{#if showModal}
+  <dialog 	
+    bind:this={dialog}
+	onclose={() => (showModal = false)}
+	onclick={(e) => { if (e.target === dialog) dialog.close(); }}>
+    <div class="modal">
+        <label for="title">Tittel: </label>
+        <input type= "text", id="title" bind:value={newdata.title} /> <br>
+        <label for="graphtype">Diagram: </label>
+        <select id="graphtype" bind:value={newdata.graphtype}>
+            <option value="Line">Linje</option>
+        </select><br>
+        <label for="xlabel">x-akse: </label>
+        <input type= "text", id="xlabel" bind:value={newdata.xlabel} /><br>
+        <label for="ylabel">y-akse: </label>
+        <input type= "text", id="ylabel" bind:value={newdata.ylabel} /><br> <br>
+        <Table bind:newdata />
+        <button type="submit", onclick={() => handleSubmit(newdata)}>Lagre</button>
+    </div>
+</dialog>
+{/if}
+
+<style>
+	dialog::backdrop{
+        width: 100%;
+        height: 100%;
+        position: fixed;
+        background: rgba(0,0,0,0.8);
+    }
+    .modal{
+        padding: 50px;
+        border-radius: 10px;
+        width: fit-content;
+        max-width: 95%;
+        margin: 10% auto;
+        text-align: center;
+        background: white;
+    }
+</style>
