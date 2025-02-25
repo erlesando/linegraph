@@ -39,7 +39,6 @@
         setTimeout(() => recreateTable = true, 500);
     }
 
-
     $effect(() => {
 		if (showModal) dialog.showModal();
 	});
@@ -64,7 +63,7 @@
         {#if recreateTable}    
             <Table bind:newdata />
         {/if}
-        <button type="submit", onclick={() => handleSubmit(newdata)}>Lagre</button>
+        <button onclick={() => handleSubmit(newdata)}>Lagre</button>
         <button onclick={handleReset}>Reset</button>
     </div>
 </dialog>

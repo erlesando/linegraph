@@ -23,12 +23,22 @@
         </g>
         <g class="grid y-grid" id="yGrid">
             {#each yaxis as yaxis_i, i}
-            <line 
-                x1="{x(0)-5}" 
-                x2="{width+5}" 
-                y1="{y(yaxis_i)}" 
-                y2="{y(yaxis_i)}" 
-                style="stroke:#E8E8E8;stroke-width:2"/>
+                {#if (yaxis_i === 0)}
+                    <line 
+                        x1="{x(0)-5}" 
+                        x2="{width+5}" 
+                        y1="{y(yaxis_i)}" 
+                        y2="{y(yaxis_i)}" 
+                        style="stroke:#A9A9A9;stroke-width:2"/>
+                {:else}
+                    <line 
+                        x1="{x(0)-5}" 
+                        x2="{width+5}" 
+                        y1="{y(yaxis_i)}" 
+                        y2="{y(yaxis_i)}" 
+                        style="stroke:#E8E8E8;stroke-width:2"/>                    
+                {/if}
+
             {/each}
         </g>
         <g class="labels x-labels" text-anchor="middle">

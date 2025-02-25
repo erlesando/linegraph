@@ -67,25 +67,26 @@
     <tr onmouseenter={() => hoveredRow = null}>
       <th></th>
 			{#each newdata.series as s, colIndex}
-				<th>
+				<th style="position: relative">
 					<input bind:value={s.legend}>
-					<button style="float:right" 
+					<button style="width:20px; height: 20px; top:0; right:0; position: absolute" 
 						onclick={() => deleteColumn(colIndex)}>
 						X
 					</button>
+          <select style="background-color:{s.color}; width:20px; height: 20px; bottom:0; right:0; position: absolute" bind:value={s.color}> 
+            <option style="background-color:red" value="red"></option>
+            <option style="background-color:blue" value="blue"></option>
+            <option style="background-color:green" value="green"></option>
+            <option style="background-color:purple" value="purple"></option>
+            <option style="background-color:pink" value="pink"></option>
+            <option style="background-color:orange" value="orange"></option>
+            <option style="background-color:brown" value="brown"></option>
+          </select>
 				</th>
 			{/each}
 			<th style="background:white; border:none">
 				<button onclick={() => addColumn()}>
 					+</button></th>
-    </tr>
-    <tr>
-        <th></th>
-        {#each newdata.series as s, colIndex}
-        <th>
-            <input style="color:{s.color}" bind:value={s.color}>
-        </th>
-    {/each}
     </tr>
   </thead>
   <tbody>
