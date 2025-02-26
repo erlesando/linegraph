@@ -4,11 +4,15 @@
     import CoordinateSystem from "$lib/CoordinateSystem.svelte";
     import Lines from "$lib/Lines.svelte";
 
-    let { data=$bindable() } = $props();
+    let { 
+        data=$bindable()
+    } = $props();
     let mydata = $state(data.data)
     let recreateCoord = $state(true);
     let debug = $state(false)
     let showModal = $state(false);
+    let add = $state(false);
+    let id = $state(0);
 
     function recreate() {
         show = false;
@@ -34,26 +38,48 @@
             id:1
             })
 	
-    function toggleModal(newGraph) {
+    function toggleModal(newGraph, i) {
+        id = i
         showModal = !showModal;        
         if (newGraph){
+            add = true
             newdata = JSON.parse(JSON.stringify(newdata_new))
         } else {
-            newdata = JSON.parse(JSON.stringify(mydata[0]))
+            add = false
+            newdata = JSON.parse(JSON.stringify(mydata[i]))
         }
     }
 </script>
 
 <Header />
-<Modal bind:showModal bind:data={mydata} bind:recreateCoord bind:newdata/>
+<Modal 
+    bind:showModal 
+    bind:data={mydata} 
+    bind:recreateCoord 
+    bind:newdata 
+    {add} 
+    {id}/>
 <main>
     {#if recreateCoord}
-        <CoordinateSystem data={mydata} /> 
+        {#each mydata as data,i}
+            <CoordinateSystem {data} />
+            <br><br><br><br>
+            <button 
+                onclick={() => toggleModal(false, i)}>
+                Endre eller legg til data
+            </button> 
+            <br>
+        {/each}
     {/if}
     <br><br><br><br>
-	<button onclick={() => toggleModal(false)}>Endre eller legg til data</button> <br>
-	<button onclick={() => toggleModal(true)}>Legg til ny graf</button>
-    <button onclick={() => debug=!debug}>Debug</button>
+	<button 
+        onclick={() => toggleModal(true)}>
+        Legg til ny graf
+    </button>
+    <button 
+        onclick={() => debug=!debug}>
+        Debug
+    </button>
 </main>
 
 {#if debug}

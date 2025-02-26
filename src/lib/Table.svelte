@@ -1,5 +1,7 @@
 <script>
-    let { newdata=$bindable()} = $props()
+    let { 
+      newdata=$bindable()
+    } = $props()
 
 	let rowCount = $state(newdata.xColumns.length);
 	let hoveredRow = $state(null);
@@ -70,8 +72,8 @@
 				<th style="position: relative">
 					<input bind:value={s.legend}>
 					<button style="width:20px; height: 20px; top:0; right:0; position: absolute" 
-						onclick={() => deleteColumn(colIndex)}>
-						X
+						onclick={() => deleteColumn(colIndex)}
+            >X
 					</button>
           <select style="background-color:{s.color}; width:20px; height: 20px; bottom:0; right:0; position: absolute" bind:value={s.color}> 
             <option style="background-color:red" value="red"></option>
@@ -85,8 +87,10 @@
 				</th>
 			{/each}
 			<th style="background:white; border:none">
-				<button onclick={() => addColumn()}>
-					+</button></th>
+				<button onclick={() => addColumn()}
+          >+
+        </button>
+      </th>
     </tr>
   </thead>
   <tbody>
@@ -98,7 +102,10 @@
         {/each}
 				<td style="background:white; border:none">
 					{#if hoveredRow === rowIndex}
-						<button onclick={() => deleteRow(rowIndex)}>X</button>
+						<button 
+              onclick={() => deleteRow(rowIndex)}
+              >X
+            </button>
 					{/if}				
 				</td>
 			</tr>
@@ -106,8 +113,9 @@
 		<tr onmouseenter={() => hoveredRow = null}>
 			<th style="background:white; border:none">
 			<button 
-                onclick={() => addRow()}>+
-            </button>
+          onclick={() => addRow()}
+          >+
+      </button>
 		</th></tr>
   </tbody>
 </table>
@@ -146,5 +154,12 @@
 
   tr:nth-child(even) {
     background-color: #f9f9f9;
+  }
+  select option {
+    color: #fff;
+  }
+  select option:hover {
+    background-color: #f4f4f4;
+    box-shadow: inset 20px 20px #fff;
   }
 </style>

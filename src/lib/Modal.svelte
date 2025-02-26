@@ -1,12 +1,24 @@
 <script>
 	import Table from './Table.svelte'
 
-	let { showModal = $bindable(), data=$bindable(), recreateCoord=$bindable(), newdata=$bindable()} = $props();
+	let { 
+        showModal = $bindable(), 
+        data=$bindable(), 
+        recreateCoord=$bindable(), 
+        newdata=$bindable(), 
+        add, 
+        id
+    } = $props();
+
     let dialog = $state()
     let recreateTable = $state(true)
 
-    function handleSubmit(newdata) {
-        data[0] = JSON.parse(JSON.stringify(newdata))
+    function handleSubmit(newdata, add, id) {
+        if (add) {
+            data.push(JSON.parse(JSON.stringify(newdata)))
+        } else {
+            data[id] = JSON.parse(JSON.stringify(newdata))
+        }
         showModal = false
         recreateCoord = false
         setTimeout(() => recreateCoord = true, 0);
@@ -42,8 +54,14 @@
         {#if recreateTable}    
             <Table bind:newdata />
         {/if}
-        <button onclick={() => handleSubmit(newdata)}>Lagre</button>
-        <button onclick={handleReset}>Reset</button>
+        <button 
+            onclick={() => handleSubmit(newdata,add,id)}
+            >Lagre
+        </button>
+        <button 
+            onclick={handleReset}
+            >Reset
+        </button>
     </div>
 </dialog>
 {/if}

@@ -8,7 +8,7 @@ export function scale(domain, range) {
 
 export function setYaxis(series) {
     const allValues = series.flatMap(s => s.values)
-    
+
     let min1 = Math.min(...allValues)
     let max1 = Math.max(...allValues)
 
