@@ -32,10 +32,8 @@
                 { 
                     legend: "", 
                     values: [0], 
-                    color: "", 
-                    id: 1 },
-            ],
-            id:1
+                    color: ""},
+            ]
             })
 	
     function toggleModal(newGraph, i) {

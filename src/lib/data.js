@@ -13,8 +13,6 @@ export let data = [{
         { 
             legend: "Foo", 
             values: [3, 2.5, 1.6, 2, 1.5], 
-            color: "blue", 
-            id: 2 }
-    ],
-    id:1
+            color: "blue"}
+    ]
     }]

@@ -1,5 +1,7 @@
 <script>
     let { series_i,
+        width,
+        height,
         x,
         y
     } = $props()
@@ -26,8 +28,6 @@
         return path
     }
 
-    const width = 1200
-    const height = 600
     const path = serie2path(series_i.values)
 </script>
 

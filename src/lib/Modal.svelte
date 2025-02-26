@@ -45,7 +45,8 @@
         <input type= "text", id="title" bind:value={newdata.title} /> <br>
         <label for="graphtype">Diagram: </label>
         <select id="graphtype" bind:value={newdata.graphtype}>
-            <option value="Line">Linje</option>
+            <option value="line">Linje</option>
+            <option value="bar">Søylediagram</option>
         </select><br>
         <label for="xlabel">x-akse: </label>
         <input type= "text", id="xlabel" bind:value={newdata.xlabel} /><br>

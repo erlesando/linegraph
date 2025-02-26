@@ -6,10 +6,10 @@ export function scale(domain, range) {
     }
 }
 
-export function setYaxis(series) {
+export function setYaxis(series,graphtype) {
     const allValues = series.flatMap(s => s.values)
 
-    let min1 = Math.min(...allValues)
+    let min1 = (graphtype === "line" ? Math.min(...allValues) : Math.min(0,Math.min(...allValues)))
     let max1 = Math.max(...allValues)
 
     if (min1 === max1) {

@@ -1,14 +1,19 @@
 <script lang="ts">
-    let { data
+    let { 
+        data
      } = $props();
 
     import { scale, setYaxis } from '$lib/utils'
     import Lines from '$lib/Lines.svelte'
+    import BarChart from './BarChart.svelte';
+
+    let graphtype = data.graphtype
+    let numberofseries = data.series.length
 
     let width = $state(1200)
     let height = $state(600)
 
-    let yAxis = setYaxis(data.series)
+    let yAxis = setYaxis(data.series, graphtype)
     let yaxis = yAxis.slice(1,yAxis.length-1)
 
     const x = $derived(scale([0, data.xColumns.length], [0, width]))
@@ -52,7 +57,7 @@
     </g>
     <g class="labels x-labels" text-anchor="middle">
         {#each data.xColumns as xaxis_i, i}
-        <text x="{x(i+0.5)}" y={height+30}>{xaxis_i}</text>
+            <text x="{x(i+0.5)}" y={height+30}>{xaxis_i}</text>
         {/each}
         <text 
             x="{width/2}" 
@@ -79,8 +84,12 @@
             >{data.ylabel}
         </text>
     </g>
-    {#each data.series as series_i}
-        <Lines {series_i} {x} {y}/>
+    {#each data.series as series_i, i}
+        {#if (data.graphtype === "line")}
+            <Lines {series_i} {width} {height} {x} {y}/>
+        {:else if (data.graphtype === "bar")}
+            <BarChart {series_i} series_number={i} {numberofseries} {width} {height} {x} {y}/>
+        {/if}
     {/each}
     </svg>
 </div>
