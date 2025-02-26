@@ -7,10 +7,15 @@ export function scale(domain, range) {
 }
 
 export function setYaxis(series) {
-    const allValues = series.flatMap(s => s.values);
-
+    const allValues = series.flatMap(s => s.values)
+    
     let min1 = Math.min(...allValues)
     let max1 = Math.max(...allValues)
+
+    if (min1 === max1) {
+        min1 = min1 - 1
+        max1 = max1 + 1
+    }
 
     // Number of digits
     let length = Math.floor(Math.log10(max1-min1)+1)

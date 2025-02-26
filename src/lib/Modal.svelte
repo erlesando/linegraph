@@ -1,30 +1,9 @@
 <script>
 	import Table from './Table.svelte'
 
-	let { showModal = $bindable(), data=$bindable(), recreateCoord=$bindable()} = $props();
+	let { showModal = $bindable(), data=$bindable(), recreateCoord=$bindable(), newdata=$bindable()} = $props();
     let dialog = $state()
     let recreateTable = $state(true)
-
-    let newdata = $state({
-            title:"Title",
-            ylabel:"ylabel",
-            xlabel:"xlabel",
-            graphtype: "linje",
-            xColumns:['andy', 'braden', 'cody', 'dory', 'edith'],
-            series: [
-                { 
-                    legend: "Name", 
-                    values: [1.3, 1.5, 3.6, 3.4, 1.5], 
-                    color: "red", 
-                    id: 1 },
-                { 
-                    legend: "Foo", 
-                    values: [3, 2.5, 1.6, 2, 1.5], 
-                    color: "blue", 
-                    id: 2 }
-            ],
-            id:1
-            })
 
     function handleSubmit(newdata) {
         data[0] = JSON.parse(JSON.stringify(newdata))
@@ -45,7 +24,7 @@
 </script>
 
 {#if showModal}
-  <dialog 	
+  <dialog
     bind:this={dialog}
 	onclose={() => (showModal = false)}
 	onclick={(e) => { if (e.target === dialog) dialog.close(); }}>

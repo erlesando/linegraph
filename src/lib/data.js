@@ -1,5 +1,5 @@
 export let data = [{
-    title:"Tittel",
+    title:"Title",
     ylabel:"y-label",
     xlabel:"x-label",
     graphtype: "line",
