@@ -1,4 +1,6 @@
 <script>
+    import Colorchart from "./Colorchart.svelte";
+
     let { 
       newdata=$bindable()
     } = $props()
@@ -24,14 +26,17 @@
         }
     }
 	
-    function deleteColumn(colIndex) {
-        if (newdata.series.length > 0 && newdata.xColumns.length>0){
-            newdata.series = newdata.series.filter((_, i) => i !== colIndex);
-            if (newdata.series.length === 0){
-                newdata.series[0] = {legend: "", values: Array(newdata.xColumns.length).fill(0), color: ""}
-            }
-        }
-    }
+  function deleteColumn(colIndex) {
+      if (newdata.series.length > 0 && newdata.xColumns.length>0){
+          newdata.series = newdata.series.filter((_, i) => i !== colIndex);
+          if (newdata.series.length === 0){
+              newdata.series[0] = {
+                legend: "", 
+                values: Array(newdata.xColumns.length).fill(0), 
+                color: "#FF0000"}
+          }
+      }
+  }
 
 	function addRow() {
         if (newdata.series.length > 0 && newdata.xColumns.length>0){
@@ -56,7 +61,7 @@
 		const newSeries = {
 			legend: "",
 			values: Array(newdata.xColumns.length).fill(0),
-			color: "",
+			color: "#FF0000",
 			id: newdata.series[newdata.series.length-1].id+1
 		}
 		rowCount = newdata.xColumns.length
@@ -70,20 +75,12 @@
       <th></th>
 			{#each newdata.series as s, colIndex}
 				<th style="position: relative">
-					<input bind:value={s.legend}>
+					<input placeholder="legend" bind:value={s.legend}>
 					<button style="width:20px; height: 20px; top:0; right:0; position: absolute" 
 						onclick={() => deleteColumn(colIndex)}
             >X
 					</button>
-          <select style="background-color:{s.color}; width:20px; height: 20px; bottom:0; right:0; position: absolute" bind:value={s.color}> 
-            <option style="background-color:red" value="red"></option>
-            <option style="background-color:blue" value="blue"></option>
-            <option style="background-color:green" value="green"></option>
-            <option style="background-color:purple" value="purple"></option>
-            <option style="background-color:pink" value="pink"></option>
-            <option style="background-color:orange" value="orange"></option>
-            <option style="background-color:brown" value="brown"></option>
-          </select>
+          <input style="width:30px; height: 30px; bottom:0; right:0; position: absolute" type="color" bind:value={s.color}/>
 				</th>
 			{/each}
 			<th style="background:white; border:none">

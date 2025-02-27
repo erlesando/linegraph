@@ -8,11 +8,11 @@ export let data = [{
         { 
             legend: "Name", 
             values: [1.3, 1.5, 3.6, 3.4, 1.5], 
-            color: "red", 
+            color: "#FF0000", 
             id: 1 },
         { 
             legend: "Foo", 
-            values: [3, 2.5, 1.6, 2, 1.5], 
-            color: "blue"}
+            values: [300, 250, 275, 310, 290], 
+            color: "#0000FF"}
     ]
     }]

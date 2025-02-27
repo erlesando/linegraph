@@ -26,13 +26,13 @@
             title:"",
             ylabel:"",
             xlabel:"",
-            graphtype: "Linje",
+            graphtype: "line",
             xColumns:["xcol"],
             series: [
                 { 
                     legend: "", 
                     values: [0], 
-                    color: ""},
+                    color: "#FF0000"},
             ]
             })
 	
