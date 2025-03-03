@@ -22,7 +22,8 @@
     {#if dataPoint != 0}
         <path 
             class="path" 
-            d = "M {x(i+0.5) - barwidth/2* (numberofseries-1) + barwidth*series_number} {y(0)} L {x(i+0.5) - barwidth/2*(numberofseries-1) + barwidth*series_number} {y(dataPoint)}"
+            d = "M {x(i+0.5) - barwidth/2 * (numberofseries-1) + barwidth*series_number} {y(0)} 
+                 L {x(i+0.5) - barwidth/2 * (numberofseries-1) + barwidth*series_number} {y(dataPoint)}"
             stroke-width="{barwidth}" 
             stroke={series_i.color} 
             fill="none" 
@@ -37,7 +38,8 @@
     {:else}    
         <path 
         class="path" 
-        d = "M {x(i+0.5) - barwidth/2* (numberofseries-1) + barwidth*series_number -barwidth/2} {y(0)} L {x(i+0.5) - barwidth/2*(numberofseries-1) + barwidth*series_number +barwidth/2} {y(0)}"
+        d = "M {x(i+0.5) - barwidth/2 * numberofseries + barwidth*series_number} {y(0)} 
+             L {x(i+0.5) - barwidth/2 * (numberofseries-2) + barwidth*series_number} {y(0)}"
         stroke-width="2" 
         stroke={series_i.color} 
         fill="none" 
@@ -50,20 +52,6 @@
         onmouseout={() => hoveredValue = [null,i]}
         />   
     {/if}
-    <path 
-        class="path" 
-        d = "M {x(i+0.5) - barwidth/2* (numberofseries-1) + barwidth*series_number} {y(0)} L {x(i+0.5) - barwidth/2*(numberofseries-1) + barwidth*series_number} {y(dataPoint)}"
-        stroke-width="{barwidth}" 
-        stroke={series_i.color} 
-        fill="none" 
-        style="stroke-dasharray: {height};  stroke-dashoffset: {height}"
-        aria-label="rectangle"
-        role="presentation"
-        onblur={onBlur} 
-        onfocus={onFocus} 
-        onmouseover={() => hoveredValue = [dataPoint,i]} 
-        onmouseout={() => hoveredValue = [null,i]}
-        />
     {#if hoveredValue[0] !== null}
         <text 
             font-size="16" 

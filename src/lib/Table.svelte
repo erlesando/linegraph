@@ -88,7 +88,7 @@
       <tr onmouseenter={() => hoveredRow = rowIndex} >
 				<td><input bind:value={newdata.xColumns[rowIndex]}></td>
         {#each newdata.series as s}
-          <td><input type="number" bind:value={s.values[rowIndex]}></td>
+          <td><input type="number" step=0.5 bind:value={s.values[rowIndex]}></td>
         {/each}
 				<td style="background:white; border:none">
 					{#if hoveredRow === rowIndex}
@@ -118,7 +118,7 @@
 	}
 
 	input {
-	  width: 50%;
+	  width: 100%;
 	  border: none;
 	  padding: 4px;
 	  font-size: 14px;
