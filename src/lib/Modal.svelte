@@ -26,8 +26,15 @@
 
     function handleReset() {
         newdata = JSON.parse(JSON.stringify(data[0]))
-/*         recreateTable = false
-        setTimeout(() => recreateTable = true, 500); */
+    }
+
+    function randomizeData() {
+        newdata.series = newdata.series.map(s => ({
+            ...s,
+            values: s.values.map(() => Math.floor(Math.random() * 26 - 10))
+        }))
+        recreateTable = false
+        setTimeout(() => recreateTable = true, 0);
     }
 
     $effect(() => {
@@ -62,6 +69,9 @@
         <button 
             onclick={handleReset}
             >Reset
+        </button>
+        <button onclick={randomizeData}
+            >Randomize
         </button>
     </div>
 </dialog>
