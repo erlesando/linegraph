@@ -1,11 +1,9 @@
 <script>
-    import Colorchart from "./Colorchart.svelte";
-
     let { 
       newdata=$bindable()
     } = $props()
 
-	let rowCount = $state(newdata.xColumns.length);
+	let rowCount = $derived(Math.max(1,newdata.xColumns.length));
 	let hoveredRow = $state(null);
 	
 	function deleteRow(rowIndex) {
@@ -15,9 +13,7 @@
                 values: s.values.filter((_, i) => i !== rowIndex)
                 }));
             newdata.xColumns = newdata.xColumns.filter((_,i) => i !== rowIndex);
-            rowCount = newdata.xColumns.length;
             if (newdata.xColumns.length === 0){
-                rowCount = 1
                 newdata.xColumns = ["xcol"]
                 for (let i = 0; i < newdata.series.length; i++) {
                     newdata.series[i].values=[0]
@@ -44,7 +40,6 @@
             for (let i = 0; i < newdata.series.length; i++) {
                 newdata.series[i].values.push(0)
             }
-            rowCount = newdata.xColumns.length
         }
         else {
             newdata.xColumns.push("xcol");
@@ -53,7 +48,6 @@
                     newdata.series[i].values.push(0)
             }
             }
-            rowCount = newdata.xColumns.length
         }
 	}
 	
@@ -64,7 +58,6 @@
 			color: "#FF0000",
 			id: newdata.series[newdata.series.length-1].id+1
 		}
-		rowCount = newdata.xColumns.length
 		newdata.series = [ ...newdata.series, newSeries]
 	}
 </script>
@@ -78,9 +71,9 @@
 					<input placeholder="legend" bind:value={s.legend}>
 					<button style="width:20px; height: 20px; top:0; right:0; position: absolute" 
 						onclick={() => deleteColumn(colIndex)}
-            >X
+            ><img style="width:20px; height:auto" src="/images/delete.svg" alt="delete">
 					</button>
-          <input style="width:30px; height: 30px; bottom:0; right:0; position: absolute" type="color" bind:value={s.color}/>
+          <input class="color" type="color" bind:value={s.color}/>
 				</th>
 			{/each}
 			<th style="background:white; border:none">
@@ -101,7 +94,7 @@
 					{#if hoveredRow === rowIndex}
 						<button 
               onclick={() => deleteRow(rowIndex)}
-              >X
+              ><img style="width:20px; height:auto" src="/images/delete.svg" alt="delete">
             </button>
 					{/if}				
 				</td>
@@ -129,7 +122,7 @@
 	  border: none;
 	  padding: 4px;
 	  font-size: 14px;
-	    background: rgba(0,0,0,0%);
+	  background: rgba(0,0,0,0%);
 	}
 
 	input:focus {
@@ -158,5 +151,21 @@
   select option:hover {
     background-color: #f4f4f4;
     box-shadow: inset 20px 20px #fff;
+  }
+
+  input[type="color"] {
+    position: absolute;
+    bottom: -4px;
+    right: -3px;
+    width: 25px; /* Adjust size */
+    height: 28px;
+    border: none;
+    padding: 0;
+  }
+
+  button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 </style>

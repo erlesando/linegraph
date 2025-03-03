@@ -18,14 +18,15 @@
 </script>
 
 {#each series_i.values as dataPoint, i}
-    <rect 
-        width="{barwidth}" 
-        height="{Math.abs(y(0)-y(dataPoint))}" 
-        x="{x(i+0.5) - barwidth/2*numberofseries + barwidth*series_number}"
-        y="{dataPoint < 0 ? y(0) : y(dataPoint)}" 
-        fill="{series_i.color}"
+    <path 
+        class="path" 
+        d="M {x(i+0.5) - barwidth/2* (numberofseries-1) + barwidth*series_number} {y(0)} L {x(i+0.5) - barwidth/2*(numberofseries-1) + barwidth*series_number} {y(dataPoint)}"
+        stroke-width="{barwidth}" 
+        stroke={series_i.color} 
+        fill="none" 
+        style="stroke-dasharray: {height};  stroke-dashoffset: {height}"
         aria-label="rectangle"
-        role="presentation" 
+        role="presentation"
         onblur={onBlur} 
         onfocus={onFocus} 
         onmouseover={() => hoveredValue = [dataPoint,i]} 
@@ -54,9 +55,13 @@
 
 
 <style>
+    .path {
+        animation: dash 2s linear forwards;
+    }
+
     @keyframes dash {
         to {
             stroke-dashoffset: 0;
         }
-        }
+    }
 </style>

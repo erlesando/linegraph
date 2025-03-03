@@ -26,8 +26,8 @@
 
     function handleReset() {
         newdata = JSON.parse(JSON.stringify(data[0]))
-        recreateTable = false
-        setTimeout(() => recreateTable = true, 500);
+/*         recreateTable = false
+        setTimeout(() => recreateTable = true, 500); */
     }
 
     $effect(() => {
@@ -77,10 +77,12 @@
     .modal{
         padding: 50px;
         border-radius: 10px;
+        min-width: 500px;
         width: fit-content;
+        height: fit-content;
+        min-height: 600px;
         max-width: 95%;
-        margin: 10% auto;
-        text-align: center;
+        text-align: left;
         background: white;
     }
 </style>
