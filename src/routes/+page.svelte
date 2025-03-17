@@ -35,18 +35,6 @@
                     color: "#FF0000"},
             ]
             })
-	
-    function toggleModal(newGraph, i) {
-        id = i
-        showModal = !showModal;        
-        if (newGraph){
-            add = true
-            newdata = JSON.parse(JSON.stringify(newdata_new))
-        } else {
-            add = false
-            newdata = JSON.parse(JSON.stringify(mydata[i]))
-        }
-    }
 </script>
 
 <Header />
