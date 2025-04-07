@@ -1,96 +1,76 @@
 <script>
 	import Table from './Table.svelte'
+    import Table_hist from './Table_hist.svelte'
+    import {randomizeData, randomizeData_negative, randomize_data} from './randomize.js'
 
 	let { 
-        showModal = $bindable(), 
         data=$bindable(), 
-        recreateCoord=$bindable(), 
-        newdata=$bindable(), 
-        add, 
-        id
+        recreateCoord=$bindable()
     } = $props();
 
-    let dialog = $state()
     let recreateTable = $state(true)
+    let newdata = $state(JSON.parse(JSON.stringify(data)))
 
-    function handleSubmit(newdata, add, id) {
-        if (add) {
-            data.push(JSON.parse(JSON.stringify(newdata)))
-        } else {
-            data[id] = JSON.parse(JSON.stringify(newdata))
-        }
-        showModal = false
+    function handleSubmit(newdata) {
+        data = JSON.parse(JSON.stringify(newdata))
         recreateCoord = false
         setTimeout(() => recreateCoord = true, 0);
     }
 
     function handleReset() {
-        newdata = JSON.parse(JSON.stringify(data[0]))
+        newdata = JSON.parse(JSON.stringify(data))
     }
-
-    function randomizeData() {
-        newdata.series = newdata.series.map(s => ({
-            ...s,
-            values: s.values.map(() => Math.floor(Math.random() * 26 - 10))
-        }))
-        recreateTable = false
-        setTimeout(() => recreateTable = true, 0);
-    }
-
-    $effect(() => {
-		if (showModal) dialog.showModal();
-	});
 </script>
 
-{#if showModal}
-  <dialog
-    bind:this={dialog}
-	onclose={() => (showModal = false)}
-	onclick={(e) => { if (e.target === dialog) dialog.close(); }}>
-    <div class="modal">
-        <label for="title">Tittel: </label>
-        <input type= "text", id="title" bind:value={newdata.title} /> <br>
-        <label for="graphtype">Diagram: </label>
-        <select id="graphtype" bind:value={newdata.graphtype}>
-            <option value="line">Linje</option>
-            <option value="bar">Søylediagram</option>
-        </select><br>
-        <label for="xlabel">x-akse: </label>
-        <input type= "text", id="xlabel" bind:value={newdata.xlabel} /><br>
-        <label for="ylabel">y-akse: </label>
-        <input type= "text", id="ylabel" bind:value={newdata.ylabel} /><br> <br>
-        {#if recreateTable}    
+<div class="modal">
+    <h1>Data</h1>
+    <label for="title">Tittel: </label>
+    <input type= "text", id="title" bind:value={newdata.title} /> <br>
+    <label for="graphtype">Diagram: </label>
+    <select id="graphtype" bind:value={newdata.graphtype}>
+        <option value="line">Linje</option>
+        <option value="bar">Søylediagram</option>
+        <option value="hist">Histogram</option>
+    </select><br>
+    <label for="xlabel">x-akse: </label>
+    <input type= "text", id="xlabel" bind:value={newdata.xlabel} /><br>
+    <label for="ylabel">y-akse: </label>
+    <input type= "text", id="ylabel" bind:value={newdata.ylabel} /><br> <br>
+    {#if recreateTable}
+        {#if newdata.graphtype === "hist"}
+            <Table_hist bind:newdata/>
+        {:else}
             <Table bind:newdata />
         {/if}
-        <button 
-            onclick={() => handleSubmit(newdata,add,id)}
-            >Lagre
-        </button>
-        <button 
-            onclick={handleReset}
-            >Reset
-        </button>
-        <button onclick={randomizeData}
-            >Randomize
-        </button>
-    </div>
-</dialog>
-{/if}
+    {/if}
+    <button 
+        onclick={() => handleSubmit(newdata)}
+        >Lagre
+    </button>
+    <button 
+        onclick={handleReset}
+        >Reset
+    </button>
+    <button onclick={() => {randomizeData(newdata)}}
+        >Randomize
+    </button>
+    <button onclick={() => {randomize_data(newdata, "exp", 4000)}}
+        >Exponential
+    </button>
+    <button onclick={() => {randomize_data(newdata, "normal", 4000)}}
+        >Normal
+    </button>
+</div>
 
 <style>
-	dialog::backdrop{
-        width: 100%;
-        height: 100%;
-        position: fixed;
-        background: rgba(0,0,0,0.8);
-    }
     .modal{
-        padding: 50px;
+/*         right:0px;
+        top:0px;
+        position:absolute; */
         border-radius: 10px;
         min-width: 500px;
         width: fit-content;
         height: fit-content;
-        min-height: 600px;
         max-width: 95%;
         text-align: left;
         background: white;

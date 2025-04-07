@@ -20,7 +20,7 @@
         setTimeout(() => show = true, 0);
     }
 
-    let newdata = $state()
+    
 
     let newdata_new= $state({
             title:"",
@@ -35,31 +35,37 @@
                     color: "#FF0000"},
             ]
             })
+
+    function changeData(newGraph, i) {
+        id = i
+        if (newGraph){
+            add = true
+            newdata = JSON.parse(JSON.stringify(newdata_new))
+        } else {
+            add = false
+            newdata = JSON.parse(JSON.stringify(mydata[i]))
+        }
+    }
 </script>
 
 <Header />
-<Modal 
-    bind:showModal 
-    bind:data={mydata} 
-    bind:recreateCoord 
-    bind:newdata 
-    {add} 
-    {id}/>
 <main>
     {#if recreateCoord}
         {#each mydata as data,i}
-            <CoordinateSystem {data} />
+            <div class="coordandtable">
+                <CoordinateSystem {data} />
+                <br>
+                <Modal
+                    bind:data={mydata[i]}
+                    bind:recreateCoord
+                    />                
+            </div>
             <br><br><br><br>
-            <button 
-                onclick={() => toggleModal(false, i)}>
-                Endre eller legg til data
-            </button> 
-            <br>
         {/each}
     {/if}
-    <br><br><br><br>
-	<button 
-        onclick={() => toggleModal(true)}>
+    <br><br><br>
+	<button
+        onclick={() => mydata.push(newdata_new)}>
         Legg til ny graf
     </button>
     <button 
@@ -74,5 +80,18 @@
 {/if}
 
 <style>
-
+    div {
+        display:grid;
+        grid-template-columns: repeat(4, 1fr);
+        margin:auto;
+        padding:auto;
+    }
 </style>
+
+
+<!--
+Hva skal gjøres videre?
+- Ikke bruk modal
+- randomizeData normalfordeling, gammafordeling, uniform fordeling, ...
+- 
+-->
