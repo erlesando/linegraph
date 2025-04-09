@@ -36,13 +36,6 @@
     <input type= "text", id="xlabel" bind:value={newdata.xlabel} /><br>
     <label for="ylabel">y-akse: </label>
     <input type= "text", id="ylabel" bind:value={newdata.ylabel} /><br> <br>
-    {#if recreateTable}
-        {#if newdata.graphtype === "hist"}
-            <Table_hist bind:newdata/>
-        {:else}
-            <Table bind:newdata />
-        {/if}
-    {/if}
     <button 
         onclick={() => handleSubmit(newdata)}
         >Lagre
@@ -54,12 +47,19 @@
     <button onclick={() => {randomizeData(newdata)}}
         >Randomize
     </button>
-    <button onclick={() => {randomize_data(newdata, "exp", 4000)}}
+    <button onclick={() => {randomize_data(newdata, "exponential", 100000)}}
         >Exponential
     </button>
-    <button onclick={() => {randomize_data(newdata, "normal", 4000)}}
+    <button onclick={() => {randomize_data(newdata, "normal", 100000)}}
         >Normal
-    </button>
+    </button> <br><br>
+    {#if recreateTable}
+        {#if newdata.graphtype === "hist"}
+            <Table_hist bind:newdata/>
+        {:else}
+            <Table bind:newdata />
+        {/if}
+    {/if}
 </div>
 
 <style>
