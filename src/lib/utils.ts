@@ -72,7 +72,26 @@ export function setYaxis(series, graphtype) {
     return y_axis
 }
 
-export function setXaxis(values) {
+export function setXaxis(values, density) {
+    // Check if density is less than 0.01, if so take away
+    let delete_before = 0
+    let delete_after = density.length-1
+
+    for (let i = 0; i < density.length; i++){
+        delete_before = i;
+        if (density[i] > 0.01){
+            break;
+        }
+    }
+    for (let i = density.length-1; i >= 0; i--){
+        delete_after = i;
+        if (density[i] > 0.01){
+            break;
+        }
+    }
+
+    values = values.slice(delete_before, delete_after+1)
+
     let min1 = Math.min(...values) 
     let max1 = Math.max(...values)
     let dec = false

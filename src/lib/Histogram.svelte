@@ -21,37 +21,39 @@
 </script>
 
 {#each series_i.values as dataPoint, i}
-    {#if dataPoint != 0}
-        <path
-            class="path" 
-            d = "M {x_hist(xColumns[i])+barwidth/2} {y(0)} 
-                L {x_hist(xColumns[i])+barwidth/2} {y(dataPoint)}"
-            stroke-width="{barwidth+1}"
-            stroke="white" 
-            fill="none" 
-            style="stroke-dasharray: {height};  stroke-dashoffset: {height}"
-            aria-label="rectangle"
-            role="presentation"
-            onblur={onBlur} 
-            onfocus={onFocus} 
-            onmouseover={() => hoveredValue = [dataPoint,i]} 
-            onmouseout={() => hoveredValue = [null,i]}
-            />
-        <path 
-            class="path" 
-            d = "M {x_hist(xColumns[i])+barwidth/2} {y(0)} 
-                 L {x_hist(xColumns[i])+barwidth/2} {y(dataPoint)}"
-            stroke-width="{barwidth}" 
-            stroke={series_i.color} 
-            fill="none" 
-            style="stroke-dasharray: {height};  stroke-dashoffset: {height}"
-            aria-label="rectangle"
-            role="presentation"
-            onblur={onBlur} 
-            onfocus={onFocus} 
-            onmouseover={() => hoveredValue = [dataPoint,i]} 
-            onmouseout={() => hoveredValue = [null,i]}
-            />    
+    {#if x_hist(xColumns[i])+barwidth/2 >= 0 && x_hist(xColumns[i])+barwidth/2 < width}
+        {#if dataPoint != 0}
+            <path
+                class="path" 
+                d = "M {x_hist(xColumns[i])+barwidth/2} {y(0)} 
+                    L {x_hist(xColumns[i])+barwidth/2} {y(dataPoint)}"
+                stroke-width="{barwidth+1}"
+                stroke="white" 
+                fill="none" 
+                style="stroke-dasharray: {height};  stroke-dashoffset: {height}"
+                aria-label="rectangle"
+                role="presentation"
+                onblur={onBlur} 
+                onfocus={onFocus} 
+                onmouseover={() => hoveredValue = [dataPoint,i]} 
+                onmouseout={() => hoveredValue = [null,i]}
+                />
+            <path 
+                class="path" 
+                d = "M {x_hist(xColumns[i])+barwidth/2} {y(0)} 
+                    L {x_hist(xColumns[i])+barwidth/2} {y(dataPoint)}"
+                stroke-width="{barwidth}" 
+                stroke={series_i.color} 
+                fill="none" 
+                style="stroke-dasharray: {height};  stroke-dashoffset: {height}"
+                aria-label="rectangle"
+                role="presentation"
+                onblur={onBlur} 
+                onfocus={onFocus} 
+                onmouseover={() => hoveredValue = [dataPoint,i]} 
+                onmouseout={() => hoveredValue = [null,i]}
+                />    
+        {/if}
     {/if}
     {#if hoveredValue[0] !== null}
         <text 

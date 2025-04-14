@@ -18,7 +18,7 @@
     let yaxis = yAxis.slice(1,yAxis.length-1)
 
     let xaxis_length = (graphtype === "hist" ? data.xColumns.length +2 : data.xColumns.length)
-    let xaxis = setXaxis(data.xColumns)
+    let xaxis = setXaxis(data.xColumns, data.series[0].values)
     let stepsize = (xaxis[1] - xaxis[0]) / 2
 
     const x = $derived(scale([0, xaxis_length], [0, width]))

@@ -42,7 +42,7 @@ function sample_normal(mean, variance, n) {
 
 function find_index(length, array, value) {
     let index = 0;
-    for (let i = 0; i < length; i++) {
+    for (let i = 0; i <= length; i++) {
         if (array[i] > value) {
             index = i-1;
             break;
@@ -51,17 +51,16 @@ function find_index(length, array, value) {
     return index;
 }
 
-export function randomize_data(newdata, type, n){
+export function randomize_data(newdata, num_bins, type, params, n){
     let vals;
     if (type === "uniform"){
-        vals = Array.from({ length: n }, () => Math.random());
+        vals = Array.from({ length: n }, () => Math.random()*(params.max-params.min)+params.min);
     } else if (type === "exponential"){
-        vals = sample_exp(1.5, n)
+        vals = sample_exp(params.lambda, n)
     } else if (type === "normal"){
-        vals = sample_normal(2,2,n)
+        vals = sample_normal(params.mean,params.stddev,n)
     }
 
-    let num_bins = 150
     let bin_size = (Math.max(...vals)-Math.min(...vals))/num_bins
     let xcols = Array.from({ length: num_bins+1 }, (_, i) => (i*bin_size+Math.min(...vals)))
     let frequency = Array(num_bins+1).fill(0)
@@ -70,25 +69,6 @@ export function randomize_data(newdata, type, n){
         frequency[bin_index] += 1
     })
     let density = frequency.map((val) => val/(n*bin_size))
-    
-    // Check if density is less than 0.01, if so take away
-    let delete_before = 0
-    let delete_after = density.length-1
-    for (let i = 0; i < density.length; i++){
-        delete_before = i;
-        if (density[i] > 0.01){
-            break;
-        }
-    }
-    for (let i = density.length-1; i >= 0; i--){
-        delete_after = i;
-        if (density[i] > 0.01){
-            break;
-        }
-    }
-    
-    xcols = xcols.slice(delete_before, delete_after+1)
-    density = density.slice(delete_before, delete_after+1)
 
     newdata.xColumns = xcols.map(num => Math.round(num*1000)/1000)
     newdata.series[0].values = density;

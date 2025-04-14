@@ -76,11 +76,6 @@
           <input class="color" type="color" bind:value={s.color}/>
 				</th>
 			{/each}
-			<th style="background:white; border:none">
-				<button onclick={() => addColumn()}
-          >+
-        </button>
-      </th>
     </tr>
   </thead>
   <tbody>
@@ -96,7 +91,7 @@
               onclick={() => deleteRow(rowIndex)}
               ><img style="width:20px; height:auto" src="/images/delete.svg" alt="delete">
             </button>
-					{/if}				
+					{/if}
 				</td>
 			</tr>
     {/each}

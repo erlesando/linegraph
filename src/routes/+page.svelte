@@ -10,7 +10,6 @@
     let mydata = $state(data.data)
     let recreateCoord = $state(true);
     let debug = $state(false)
-    let showModal = $state(false);
     let add = $state(false);
     let id = $state(0);
 
@@ -19,8 +18,6 @@
         // Ensures it's removed before setting it back
         setTimeout(() => show = true, 0);
     }
-
-    
 
     let newdata_new= $state({
             title:"",
@@ -87,11 +84,3 @@
         padding:auto;
     }
 </style>
-
-
-<!--
-Hva skal gjøres videre?
-- Ikke bruk modal
-- randomizeData normalfordeling, gammafordeling, uniform fordeling, ...
-- 
--->
