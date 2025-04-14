@@ -67,8 +67,8 @@
     <tr onmouseenter={() => hoveredRow = null}>
       <th></th>
 			{#each newdata.series as s, colIndex}
-				<th style="position: relative">
-					Frequency
+        <th style="position: relative">
+          <input placeholder="legend" bind:value={s.legend}>
 					<button style="width:20px; height: 20px; top:0; right:0; position: absolute" 
 						onclick={() => deleteColumn(colIndex)}
             ><img style="width:20px; height:auto" src="/images/delete.svg" alt="delete">

@@ -1,3 +1,5 @@
+import { setXaxis } from './utils'
+
 export function randomizeData(newdata) {
     newdata.series = newdata.series.map(s => ({
         ...s,
@@ -56,13 +58,13 @@ export function randomize_data(newdata, type, n){
     } else if (type === "exponential"){
         vals = sample_exp(1.5, n)
     } else if (type === "normal"){
-        vals = sample_normal(0,1,n)
+        vals = sample_normal(2,2,n)
     }
 
-    let num_bins = 30
+    let num_bins = 150
     let bin_size = (Math.max(...vals)-Math.min(...vals))/num_bins
-    let frequency = Array(num_bins+1).fill(0)
     let xcols = Array.from({ length: num_bins+1 }, (_, i) => (i*bin_size+Math.min(...vals)))
+    let frequency = Array(num_bins+1).fill(0)
     vals.forEach(num => {
         let bin_index = find_index(num_bins, xcols, num)
         frequency[bin_index] += 1
@@ -84,11 +86,11 @@ export function randomize_data(newdata, type, n){
             break;
         }
     }
-    console.log(delete_before, delete_after)
+    
     xcols = xcols.slice(delete_before, delete_after+1)
     density = density.slice(delete_before, delete_after+1)
 
-    newdata.xColumns = xcols.map(num => Math.round(num*10)/10)
+    newdata.xColumns = xcols.map(num => Math.round(num*1000)/1000)
     newdata.series[0].values = density;
     return newdata
 }

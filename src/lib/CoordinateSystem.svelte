@@ -3,7 +3,7 @@
         data
      } = $props();
 
-    import { scale, setYaxis } from '$lib/utils'
+    import { scale, setYaxis, setXaxis } from '$lib/utils'
     import Lines from '$lib/Lines.svelte'
     import BarChart from './BarChart.svelte';
     import Histogram from './Histogram.svelte';
@@ -17,9 +17,12 @@
     let yAxis = setYaxis(data.series, graphtype)
     let yaxis = yAxis.slice(1,yAxis.length-1)
 
-    let xaxis_length = (graphtype === "hist" ? data.xColumns.length + 2 : data.xColumns.length)
+    let xaxis_length = (graphtype === "hist" ? data.xColumns.length +2 : data.xColumns.length)
+    let xaxis = setXaxis(data.xColumns)
+    let stepsize = (xaxis[1] - xaxis[0]) / 2
 
     const x = $derived(scale([0, xaxis_length], [0, width]))
+    const x_hist = $derived(scale([xaxis[0]-stepsize, xaxis[xaxis.length-1]+stepsize], [0, width]))
     const y = $derived(scale([yAxis[0], yAxis[yAxis.length-1]], [height, 0]))
 </script>
 
@@ -31,38 +34,36 @@
         bind:clientWidth={width} 
         bind:clientHeight={height} >
     <g class="grid x-grid" id="xGrid" style="stroke:#E8E8E8;stroke-width:2">
-        {#each data.xColumns as xaxis_i, i}
-            <line 
-                x1="{x(i+0.5)}" 
-                x2="{x(i+0.5)}" 
-                y1="{height+5}" 
-                y2="{-5}"/>
-        {/each}
         {#if data.graphtype === "hist"}
-            <line 
-                x1="{x(data.xColumns.length+0.5)}" 
-                x2="{x(data.xColumns.length+0.5)}" 
-                y1="{height+5}" 
-                y2="{-5}"/>
-            <line 
-                x1="{x(data.xColumns.length+1.5)}" 
-                x2="{x(data.xColumns.length+1.5)}" 
-                y1="{height+5}" 
-                y2="{-5}"/>
+            {#each xaxis as xaxis_i, i}
+                <line 
+                    x1="{x_hist(xaxis_i)}" 
+                    x2="{x_hist(xaxis_i)}" 
+                    y1="{height+5}" 
+                    y2="{-5}"/>
+            {/each}
+        {:else}
+            {#each data.xColumns as xaxis_i, i}
+                <line 
+                    x1="{x(i+0.5)}" 
+                    x2="{x(i+0.5)}" 
+                    y1="{height+5}" 
+                    y2="{-5}"/>
+            {/each}
         {/if}
     </g>
     <g class="grid y-grid" id="yGrid">
         {#each yaxis as yaxis_i, i}
             {#if (yaxis_i === 0)}
                 <line 
-                    x1="{x(0)-5}" 
+                    x1="{-5}" 
                     x2="{width+5}" 
                     y1="{y(yaxis_i)}" 
                     y2="{y(yaxis_i)}" 
                     style="stroke:#A9A9A9;stroke-width:2"/>
             {:else}
                 <line 
-                    x1="{x(0)-5}" 
+                    x1="{-5}" 
                     x2="{width+5}" 
                     y1="{y(yaxis_i)}" 
                     y2="{y(yaxis_i)}" 
@@ -72,16 +73,16 @@
     </g>
     <g class="labels x-labels" text-anchor="middle">
         {#if data.graphtype === "hist"}
-        {#each data.xColumns as xaxis_i, i}
-            <text x="{x(i+1.5)}" y={height+30}>{xaxis_i}</text>
-        {/each}
-        <text 
-            x="{width/2}" 
-            y={height+70} 
-            style="font-size:25px" 
-            class="label-title"
-            >{data.xlabel}
-        </text> 
+            {#each xaxis as xaxis_i, i}
+                <text x="{x_hist(xaxis_i)}" y={height+30}>{xaxis_i}</text>
+            {/each}
+            <text 
+                x="{width/2}" 
+                y={height+70} 
+                style="font-size:25px" 
+                class="label-title"
+                >{data.xlabel}
+            </text> 
         {:else}
             {#each data.xColumns as xaxis_i, i}
                 <text x="{x(i+0.5)}" y={height+30}>{xaxis_i}</text>
@@ -118,7 +119,7 @@
         {:else if (data.graphtype === "bar")}
             <BarChart {series_i} series_number={i} {numberofseries} {width} {height} {x} {y}/>
         {:else if (data.graphtype === "hist")}
-            <Histogram {series_i} series_number={i} {numberofseries} {width} {height} {x} {y}/>
+            <Histogram {series_i} series_number={i} {numberofseries} xColumns ={data.xColumns} {width} {height} {x_hist} {x} {y}/>
         {/if}
     {/each}
     </svg>

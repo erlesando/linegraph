@@ -1,6 +1,6 @@
 <script>
     import Header from "$lib/Header.svelte";
-	import Modal from "$lib/Modal.svelte"
+	import Data_area from "$lib/Data_area.svelte"
     import CoordinateSystem from "$lib/CoordinateSystem.svelte";
     import Lines from "$lib/Lines.svelte";
 
@@ -55,7 +55,7 @@
             <div class="coordandtable">
                 <CoordinateSystem {data} />
                 <br>
-                <Modal
+                <Data_area
                     bind:data={mydata[i]}
                     bind:recreateCoord
                     />                

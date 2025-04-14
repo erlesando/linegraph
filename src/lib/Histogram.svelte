@@ -2,14 +2,16 @@
     let { series_i,
         numberofseries,
         series_number,
+        xColumns,
         width,
         height,
+        x_hist,
         x,
         y
     } = $props()
 
     let hoveredValue = $state([null, 0])
-    let barwidth = (width)/(series_i.values.length+2)
+    let barwidth = x_hist(xColumns[1])-x_hist(xColumns[0])
     const onFocus = () => showValue = ""
     const onBlur = () => showValue = ""
     let showValue = $state("")
@@ -22,9 +24,9 @@
     {#if dataPoint != 0}
         <path
             class="path" 
-            d = "M {x(i+1.5) + barwidth*series_number} {y(0)} 
-                L {x(i+1.5) + barwidth*series_number} {y(dataPoint)}"
-            stroke-width="{barwidth+1}" 
+            d = "M {x_hist(xColumns[i])+barwidth/2} {y(0)} 
+                L {x_hist(xColumns[i])+barwidth/2} {y(dataPoint)}"
+            stroke-width="{barwidth+1}"
             stroke="white" 
             fill="none" 
             style="stroke-dasharray: {height};  stroke-dashoffset: {height}"
@@ -37,14 +39,18 @@
             />
         <path 
             class="path" 
-            d = "M {x(i+1.5) + barwidth*series_number} {y(0)} 
-                 L {x(i+1.5) + barwidth*series_number} {y(dataPoint)}"
+            d = "M {x_hist(xColumns[i])+barwidth/2} {y(0)} 
+                 L {x_hist(xColumns[i])+barwidth/2} {y(dataPoint)}"
             stroke-width="{barwidth}" 
             stroke={series_i.color} 
             fill="none" 
             style="stroke-dasharray: {height};  stroke-dashoffset: {height}"
             aria-label="rectangle"
             role="presentation"
+            onblur={onBlur} 
+            onfocus={onFocus} 
+            onmouseover={() => hoveredValue = [dataPoint,i]} 
+            onmouseout={() => hoveredValue = [null,i]}
             />    
     {/if}
     {#if hoveredValue[0] !== null}
@@ -55,14 +61,9 @@
             text-anchor="middle" 
             alignment-baseline="middle"> 
             <tspan 
-                x="{x(hoveredValue[1]+0.5) - barwidth/2*(numberofseries - 1) + barwidth*series_number}" 
-                y="{(hoveredValue[0] < 0 ? (y(hoveredValue[0])+15) : (y(hoveredValue[0])-20))}"
+                x="{width-series_i.legend.length*5}" 
+                y="{20}"
                 >{series_i.legend} 
-            </tspan>
-            <tspan 
-                x="{x(hoveredValue[1]+0.5) - barwidth/2*(numberofseries - 1) + barwidth*series_number}" 
-                y="{(hoveredValue[0] < 0 ? (y(hoveredValue[0])+30) : (y(hoveredValue[0])-5))}"
-                >{hoveredValue[0]}
             </tspan>
             </text>
     {/if}

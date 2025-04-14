@@ -22,7 +22,7 @@
     }
 </script>
 
-<div class="modal">
+<div>
     <h1>Data</h1>
     <label for="title">Tittel: </label>
     <input type= "text", id="title" bind:value={newdata.title} /> <br>
@@ -63,7 +63,7 @@
 </div>
 
 <style>
-    .modal{
+    div{
 /*         right:0px;
         top:0px;
         position:absolute; */
